@@ -20,9 +20,12 @@
             font-size: 20px;
         }
 
-        #debugElement {
-            color: rgba(255, 255, 255, 0.48);
+        .debug {
             position: absolute;
+        }
+
+        .debug > div {
+            color: rgba(255, 255, 255, 0.48);
         }
         .main {
             width: 100vw;
@@ -82,9 +85,13 @@
             </div>
         </div>
     </div>
-    <div id="debugElement">hang on...</div>
+    <div class="debug">
+        <div id="debugElement" class="debugElement">hang on...</div>
+        <div id="debugElement2" class="debugElement">v0.0.2</div>
+    </div>
     <script>
         var alexaClient;
+        var legBroken = 0;
         Alexa.create({version: '1.1'})
             .then((args) => {
                 const {
@@ -124,7 +131,7 @@
                 setTimeout(function(){
                     showQuestion(2);
                 }, 1000);
-            }, 1000)
+            }, 1000);
 
             setInterval(function() {
                 var suffix = "";
@@ -135,6 +142,12 @@
                 dotCount++;
             }, 800);
         }
+
+        setInterval(function(){
+            // breake idle
+            legBroken++;
+            document.getElementById("debugElement2").innerHTML = "leg broken: " + legBroken;
+        }, 10 * 60 * 1000);
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
