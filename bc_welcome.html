@@ -29,7 +29,7 @@
         }
         .main {
             width: 100vw;
-            height: 100%;
+            height: 100vh;
             position: absolute;
             top:0;
             left:0;
@@ -89,7 +89,16 @@
             top: 0;
         }
 
-        video {
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .background video {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -162,54 +171,31 @@
                 transform: rotate(12deg);
             }
         }
-
-        .chat-box {
-            width: 240px;
-            height: 100vh;
-            overflow: hidden;
-            background: gray;
-            padding-left: 24px;
-            position: absolute;
-            right: 0;
-            top: 0;
-            z-index: 101;
-        }
-
-        .backlog {
-            background: #000000;
-            width: 100%;
-            height: 100%;
-        }
-
-        .handler-box {
-            background: black;
-            width: 24px;
-        }
-
-        .handler {
-            width: 6px;
-            height: 32px;
-            background: rgba(255, 255, 255, 0.64);
-            border-radius: 12px;
-        }
     </style>
     <script src="https://cdn.html.games.alexa.a2z.com/alexa-html/latest/alexa-html.js"></script>
     <script src="https://kit.fontawesome.com/1b88b52fc5.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="main d-flex align-items-center justify-content-center" id="main">
-        <div class="video" id="bg-video">
-            <video autoplay muted loop>
-                <source src="assets/videos/sample.mp4" type="video/mp4">
-            </video>
+    <div class="background">
+        <video autoplay muted loop>
+            <source src="assets/videos/sample.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="main h-100 d-flex justify-content-end flex-column" id="main">
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <div class="col-12 d-none bubble-row" id="q1">
+                    <div class="bubble">What's your name?</div>
+                </div>
+                <div class="col-12 d-none bubble-row self" id="q2">
+                    <input type="email" class="form-control bubble" id="current" id="exampleInputEmail1" placeholder="Say or Type your name...">
+                </div>
+            </div>
         </div>
     </div>
     <div class="debug">
         <div id="debugElement" class="debugElement">hang on... <i class="fa-solid fa-bell"></i></div>
         <div id="debugElement2" class="debugElement">v0.0.2</div>
-    </div>
-    <div id="chat-box" class="chat-box d-flex flex-row">
-        <div class="backlog"></div>
     </div>
     <a href="#" class="hotspot top-right BCButton m-2"><div class="animated-btn-icon"><i class="fa-solid fa-bell"></i></div></a>
     <script>
@@ -227,32 +213,50 @@
             .catch(error => {
                 document.getElementById('debugElement').innerHTML = 'Alexa not ready :(';
             });
+        var dotCount = 0;
 
-        // drop to resize chat panel
-        const chatPanel = document.getElementById("chat-box");
-        const videoPlayer = document.getElementById("main");
-        videoPlayer.style.width = (window.innerWidth - parseInt(getComputedStyle(chatPanel, '').width)) + "px";
-        var m_pos = 0;
-        const BORDER = 24;
-        function resize(e){
-            console.log("current pos " + e.x + "::" + m_pos);
-            const dx = m_pos - e.x;
-            m_pos = e.x;
-            chatPanel.style.width = (parseInt(getComputedStyle(chatPanel, '').width) + dx) + "px";
-            videoPlayer.style.width = (window.innerWidth - parseInt(getComputedStyle(chatPanel, '').width)) + "px";
+        rolling();
+
+        document.getElementById("debugElement").onclick = function(evt) {
+            rolling();
+        };
+        function showQuestion(id) {
+            document.getElementById("q" + id).classList.remove("d-none");
         }
 
-        chatPanel.addEventListener("mousedown", function(e){
-            console.log("dragging" + e.x);
-            if (e.offsetX < BORDER) {
-                m_pos = e.x;
-                document.addEventListener("mousemove", resize, false);
-            }
-        }, false);
+        function resetBacklog() {
+            document.getElementById("main").classList.remove("dimout");
+            document.getElementById("q1").classList.add("d-none");
+            document.getElementById("q2").classList.add("d-none");
+        }
 
-        document.addEventListener("mouseup", function(){
-            document.removeEventListener("mousemove", resize, false);
-        }, false);
+        function rolling() {
+            resetBacklog();
+            setTimeout(function(){
+                // show 1st question
+                showQuestion(1);
+                // dimout background
+                document.getElementById("main").classList.add("dimout");
+                setTimeout(function(){
+                    showQuestion(2);
+                }, 1000);
+            }, 1000);
+
+            setInterval(function() {
+                var suffix = "";
+                for (var i = 0; i < dotCount % 4; i++) {
+                    suffix += ".";
+                }
+                document.getElementById("current").setAttribute("placeholder", "Say or Type your name" + suffix);
+                dotCount++;
+            }, 800);
+        }
+
+        setInterval(function(){
+            // breake idle
+            legBroken++;
+            document.getElementById("debugElement2").innerHTML = "leg broken: " + legBroken;
+        }, 30 * 1000);
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
