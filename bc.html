@@ -171,7 +171,6 @@
             position: absolute;
             right: 0;
             top: 0;
-            z-index: 101;
         }
 
         .backlog {
@@ -182,14 +181,14 @@
 
         .handler-box {
             background: black;
-            width: 24px;
         }
 
         .handler {
             width: 6px;
-            height: 32px;
+            height: 36px;
             background: rgba(255, 255, 255, 0.64);
             border-radius: 12px;
+            margin: 9px;
         }
     </style>
     <script src="https://cdn.html.games.alexa.a2z.com/alexa-html/latest/alexa-html.js"></script>
@@ -237,8 +236,13 @@
         videoPlayer.style.width = (window.innerWidth - parseInt(getComputedStyle(chatPanel, '').width)) + "px";
         var m_pos = 0;
         const BORDER = 24;
+
+        handlerBox.addEventListener("click", event => {
+            chatPanel.style.width = (parseInt(getComputedStyle(chatPanel, '').width) < 80) ? "240px" : BORDER + "px";
+            videoPlayer.style.width = (window.innerWidth - parseInt(getComputedStyle(chatPanel, '').width)) + "px";
+        });
+
         function resize(e){
-            e.preventDefault();
             let touch = e.changedTouches[0];
             console.log("current pos " + touch.clientX + "::" + m_pos);
             const dx = m_pos - touch.clientX;
@@ -248,7 +252,6 @@
         }
 
         handlerBox.addEventListener("touchstart", function(e){
-            e.preventDefault();
             let touch = e.changedTouches[0];
             m_pos = touch.clientX;
             document.addEventListener("touchmove", resize, false);
