@@ -238,7 +238,7 @@
         const BORDER = 24;
 
         handlerBox.addEventListener("click", event => {
-            chatPanel.style.width = (parseInt(getComputedStyle(chatPanel, '').width) < 80) ? "240px" : BORDER + "px";
+            chatPanel.style.width = (parseInt(getComputedStyle(chatPanel, '').width) < 80) ? "240px" : (BORDER + 12) + "px";
             videoPlayer.style.width = (window.innerWidth - parseInt(getComputedStyle(chatPanel, '').width)) + "px";
         });
 
