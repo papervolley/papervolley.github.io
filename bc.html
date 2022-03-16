@@ -261,8 +261,8 @@
             document.removeEventListener("touchmove", resize, false);
         }, false);
 
+        document.getElementById('debugElement2').innerHTML = 'broken leg';
         setInterval(() => {
-            document.getElementById('debugElement2').innerHTML = 'broken leg';
             chatPanel.click();
         }, 10 * 1000);
     </script>
