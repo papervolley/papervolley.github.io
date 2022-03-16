@@ -168,7 +168,6 @@
             height: 100vh;
             overflow: hidden;
             background: gray;
-            padding-left: 24px;
             position: absolute;
             right: 0;
             top: 0;
@@ -209,6 +208,9 @@
         <div id="debugElement2" class="debugElement">v0.0.2</div>
     </div>
     <div id="chat-box" class="chat-box d-flex flex-row">
+        <div id="handler-box" class="handler-box d-flex align-items-center justify-content-center">
+            <div class="handler"></div>
+        </div>
         <div class="backlog"></div>
     </div>
     <a href="#" class="hotspot top-right BCButton m-2"><div class="animated-btn-icon"><i class="fa-solid fa-bell"></i></div></a>
@@ -229,6 +231,7 @@
             });
 
         // drop to resize chat panel
+        const handlerBox = document.getElementById("handler-box");
         const chatPanel = document.getElementById("chat-box");
         const videoPlayer = document.getElementById("main");
         videoPlayer.style.width = (window.innerWidth - parseInt(getComputedStyle(chatPanel, '').width)) + "px";
@@ -236,24 +239,23 @@
         const BORDER = 24;
         function resize(e){
             e.preventDefault();
-            console.log("current pos " + e.x + "::" + m_pos);
-            const dx = m_pos - e.x;
-            m_pos = e.x;
+            let touch = e.changedTouches[0];
+            console.log("current pos " + touch.clientX + "::" + m_pos);
+            const dx = m_pos - touch.clientX;
+            m_pos = touch.clientX;
             chatPanel.style.width = (parseInt(getComputedStyle(chatPanel, '').width) + dx) + "px";
             videoPlayer.style.width = (window.innerWidth - parseInt(getComputedStyle(chatPanel, '').width)) + "px";
         }
 
-        chatPanel.addEventListener("pointerdown", function(e){
+        handlerBox.addEventListener("touchstart", function(e){
             e.preventDefault();
-            console.log("dragging" + e.x);
-            if (e.offsetX < BORDER) {
-                m_pos = e.x;
-                document.addEventListener("pointermove", resize, false);
-            }
+            let touch = e.changedTouches[0];
+            m_pos = touch.clientX;
+            document.addEventListener("touchmove", resize, false);
         }, false);
 
-        document.addEventListener("pointerup", function(){
-            document.removeEventListener("pointermove", resize, false);
+        document.addEventListener("touchend", function(){
+            document.removeEventListener("touchmove", resize, false);
         }, false);
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
