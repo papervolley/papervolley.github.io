@@ -239,14 +239,18 @@
             /* font-family: serif; */
             padding: 8px 8px 12px 8px;
             color: white;
-            animation-name: popup;
-            animation-duration: 60s;
-            animation-timing-function: ease-out;
-            animation-iteration-count: infinite;
+            line-height: 1.2;
         }
 
         .prompt span {
             color: #FFEC37;
+        }
+
+        .popup {
+            animation-name: popup;
+            animation-duration: 1s;
+            animation-timing-function: ease-out;
+            animation-iteration-count: 1;
         }
 
         @keyframes popup {
@@ -254,20 +258,16 @@
                 transform: scale(1) translate(0, 0);
             }
 
-            0.4% {
+            25% {
                 transform: scale(1.1) translate(0, -8px);
             }
 
-            0.8% {
+            50% {
                 transform: scale(1) translate(0, 0);
             }
 
-            1.2% {
+            75% {
                 transform: scale(1.1) translate(0, -8px);
-            }
-
-            1.6% {
-                transform: scale(1) translate(0, 0);
             }
 
             to {
@@ -298,7 +298,7 @@
             <div class="backlog d-flex flex-column-reverse">
                 <div id="backlog-wrapper" class="d-flex flex-column-reverse justify-content-end"></div>
             </div>
-            <div class="prompt">
+            <div class="prompt popup" id="prompt">
                 "Alexa, <span>Say</span> hi"
             </div>
         </div>
@@ -355,7 +355,7 @@
         document.getElementById('debugElement2').innerHTML = 'broken leg';
         setInterval(() => {
             chatPanel.click();
-        }, 10 * 1000);
+        }, 60 * 1000);
 
         const chats  = [
             "hi",
@@ -400,7 +400,24 @@
             "Harper"
         ];
 
+        const prompts = [
+            "Alexa, <span>Say</span> hi",
+            "Alexa, <span>Say</span> hello to Jam",
+            "Alexa, <span>Say</span> hello to Sophia"
+        ];
+
+        var promptIndex = 0;
+
         generateChats(20);
+
+        setInterval(function() {
+            promptIndex++;
+            const prompt = document.getElementById("prompt");
+            prompt.innerHTML = prompts[promptIndex%prompts.length];
+            prompt.style.animation = "none";
+            prompt.offsetHeight;
+            prompt.style.animation = null;
+        }, 10 * 1000);
 
         function generateChats(amount = 10) {
             const backlogWrapper = document.getElementById("backlog-wrapper");
