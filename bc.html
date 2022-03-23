@@ -283,6 +283,7 @@
             left: 0;
             transition: opacity 0.6s linear;
             opacity: 0;
+            pointer-events: none;
         }
 
         .show {
@@ -293,11 +294,11 @@
             height: 44px;
             background: rgba(0, 0, 0, 0.64);
             color: white;
-            font-size: 24pt;
+            font-size: 24px;
             display: inline-flex;
             justify-content: center;
             align-items: center;
-            border-radius: 24pt;
+            border-radius: 24px;
             padding: 8px 16px;
         }
 
@@ -345,19 +346,19 @@
     <div class="overlay d-flex justify-content-between flex-column show" id="overlay">
         <div class="top-buttons d-flex flex-row m-2">
             <div class="info-panel">
-                <span><svg xmlns="http://www.w3.org/2000/svg" width="24pt" height="24pt" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={12}>
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={12}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                   </svg></span>
                 64°
             </div>
             <div class="buttons d-flex flex-row flex-grow-1 justify-content-end">
-                <a href="#" class="BCButton default-button"><span class="icon"><svg width="24pt" height="24pt" xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <a href="#" class="BCButton default-button"><span class="icon"><svg width="48" height="48" xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                   </svg></span></a>
             </div>
         </div>
         <div class="bottom-buttons d-flex flex-row m-2">
-            <a href="#" class="BCButton default-button"><span class="icon animated-btn-icon"><svg width="24pt" height="24pt" xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={12}>
+            <a href="#" class="BCButton default-button"><span class="icon animated-btn-icon"><svg width="48" height="48" xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={12}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
               </svg></span></a>
         </div>
