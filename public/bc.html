@@ -237,12 +237,82 @@
             font-style: italic;
             font-size: 32px;
             /* font-family: serif; */
-            padding: 0 8px 12px 8px;
+            padding: 8px 8px 12px 8px;
             color: white;
+            line-height: 1.2;
         }
 
         .prompt span {
             color: #FFEC37;
+        }
+
+        .popup {
+            animation-name: popup;
+            animation-duration: 1s;
+            animation-timing-function: ease-out;
+            animation-iteration-count: 1;
+        }
+
+        @keyframes popup {
+            from {
+                transform: scale(1) translate(0, 0);
+            }
+
+            25% {
+                transform: scale(1.1) translate(0, -8px);
+            }
+
+            50% {
+                transform: scale(1) translate(0, 0);
+            }
+
+            75% {
+                transform: scale(1.1) translate(0, -8px);
+            }
+
+            to {
+                transform: scale(1) translate(0, 0);
+            }
+        }
+
+        .overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.6s linear;
+            opacity: 0;
+        }
+
+        .show {
+            opacity: 1;
+        }
+
+        .info-panel {
+            height: 44px;
+            background: rgba(0, 0, 0, 0.64);
+            color: white;
+            font-size: 24px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 24px;
+            padding: 8px 16px;
+        }
+
+        .info-panel span {
+            display: flex;
+        }
+
+        .default-button {
+            max-height: 44px;
+            padding: 8px 16px;
+            color: black;
+        }
+
+        .default-button .icon {
+            display: flex;
         }
     </style>
     <script src="https://cdn.html.games.alexa.a2z.com/alexa-html/latest/alexa-html.js"></script>
@@ -268,12 +338,31 @@
             <div class="backlog d-flex flex-column-reverse">
                 <div id="backlog-wrapper" class="d-flex flex-column-reverse justify-content-end"></div>
             </div>
-            <div class="prompt">
+            <div class="prompt popup" id="prompt">
                 "Alexa, <span>Say</span> hi"
             </div>
         </div>
     </div>
-    <a href="#" class="hotspot top-right BCButton m-2"><div class="animated-btn-icon"><i class="fa-solid fa-bell"></i></div></a>
+    <div class="overlay d-flex justify-content-between flex-column show" id="overlay">
+        <div class="top-buttons d-flex flex-row m-2">
+            <div class="info-panel">
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={12}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg></span>
+                64°
+            </div>
+            <div class="buttons d-flex flex-row flex-grow-1 justify-content-end">
+                <a href="#" class="BCButton default-button"><span class="icon"><svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg></span></a>
+            </div>
+        </div>
+        <div class="bottom-buttons d-flex flex-row m-2">
+            <a href="#" class="BCButton default-button"><span class="icon animated-btn-icon"><svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={12}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg></span></a>
+        </div>
+    </div>
     <script>
         var alexaClient;
         var legBroken = 0;
@@ -325,7 +414,7 @@
         document.getElementById('debugElement2').innerHTML = 'broken leg';
         setInterval(() => {
             chatPanel.click();
-        }, 10 * 1000);
+        }, 60 * 1000);
 
         const chats  = [
             "hi",
@@ -370,7 +459,41 @@
             "Harper"
         ];
 
+        const prompts = [
+            "Alexa, <span>Say</span> hi",
+            "Alexa, <span>Say</span> hello to Jam",
+            "Alexa, <span>Say</span> hello to Sophia"
+        ];
+
+        var promptIndex = 0;
+
         generateChats(20);
+
+        setInterval(function() {
+            promptIndex++;
+            const prompt = document.getElementById("prompt");
+            prompt.innerHTML = prompts[promptIndex%prompts.length];
+            prompt.style.animation = "none";
+            prompt.offsetHeight;
+            prompt.style.animation = null;
+        }, 10 * 1000);
+
+        const overlay = document.getElementById("overlay");
+        var showingOverlay = true;
+
+        overlay.addEventListener("click", toggleButtons);
+        
+        videoPlayer.addEventListener("click", toggleButtons);
+
+        function toggleButtons() {
+            // toggle buttons
+            console.log("toggle");
+            
+            showingOverlay ? 
+                overlay.classList.remove("show") :
+                overlay.classList.add("show");
+            showingOverlay = !showingOverlay;
+        }
 
         function generateChats(amount = 10) {
             const backlogWrapper = document.getElementById("backlog-wrapper");
