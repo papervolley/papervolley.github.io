@@ -48,12 +48,6 @@ const names = [
     "Harper"
 ];
 
-const prompts = [
-    "Alexa, <span>Say</span> hi",
-    "Alexa, <span>Say</span> hello to Jam",
-    "Alexa, <span>Say</span> hello to Sophia"
-];
-
 function Chat(props) {
     return (
         <div className="inline-flex flex-col w-full chatlog">
