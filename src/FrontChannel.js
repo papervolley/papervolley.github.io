@@ -1,8 +1,9 @@
 import './FrontChannel.css';
-import React from "react";
+import React, {useState, useEffect} from "react";
 import ReactDOM from "react-dom";
+import { randomPick } from "./utils.js";
 
-const chats  = [
+const chatlogs  = [
     "hi",
     "renee ding ding you got it right",
     "i can hear you jam",
@@ -53,24 +54,47 @@ const prompts = [
 
 function Chat(props) {
     return (
-        <div className="inline-flex flex-col w-full">
+        <div className="inline-flex flex-col w-full chatlog">
             <div className="name">{props.username}</div>
             <div className="bubble">
-                <div className="chatlog">
-                    {props.chatlog}
-                </div>
+                {props.chatlog}
             </div>
         </div>
     );
 }
 
-function ChatBacklog() {
+function WelcomeMessage(props) {
     return (
-        <div className="backlog-box flex flex-col-reverse overflow-y-scroll">
-            <div className="backlog-wrapper flex flex-col-reverse justify-end bg-amber-100">
+        <div className="inline w-full welcome text-white my-2 text-2xl">
+            <span className='ml-1 mr-2 animate-swing inline-block wave-emoji'>👋</span>Welcome, {props.username}
+        </div>
+    );
+}
+
+function ChatBacklog() {
+    const initCount = 10;
+    const [chats, setChats] = useState([...Array(initCount)].map((i, e) => {
+        return {username: randomPick(names), chatlog: randomPick(chatlogs), newuser: false};
+    }));
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            // throw dice to decide new user joins or not
+            if (Math.random() > 0.5) {
+                // new user joins
+                const newChat = {username: `${randomPick(names)}`, chatlog: `${randomPick(chatlogs)}`, newuser: Math.random() > 0.5};
+                setChats(chats => [newChat].concat(chats));
+            }
+        }, 3000);
+        return () => clearInterval(interval);
+    }, []);
+
+    return (
+        <div className="backlog-box flex flex-col-reverse overflow-y-scroll overflow-x-hidden">
+            <div className="backlog-wrapper flex flex-col-reverse justify-end">
                 {
-                    [...Array(10)].map((e, i) => (
-                        <Chat username="aa" chatlog="bb" />
+                    chats.map((e, i) => (
+                        e.newuser ? <WelcomeMessage key={i} username={e.username} /> : <Chat key={i} username={e.username} chatlog={e.chatlog} />
                     ))
                 }
             </div>
@@ -91,7 +115,7 @@ function FrontChannel() {
     return (
         <div>
             <div className="main w-screen h-screen flex flex-row justify-center items-center bg-black">
-                <div className="video-box w-720 h-full">
+                <div className="video-box h-full">
                     <video autoPlay={true} muted={true} loop={true}>
                         <source src="assets/videos/sample.mp4" type="video/mp4" />
                     </video>
