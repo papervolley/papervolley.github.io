@@ -3,6 +3,8 @@ import React, {useState, useEffect} from "react";
 import ReactDOM from "react-dom";
 import { randomPick } from "./utils.js";
 
+const NOT_NEW_USER_STRING = "noone";
+
 const chatlogs  = [
     "hi",
     "renee ding ding you got it right",
@@ -71,29 +73,12 @@ function WelcomeMessage(props) {
     );
 }
 
-function ChatBacklog() {
-    const initCount = 10;
-    const [chats, setChats] = useState([...Array(initCount)].map((i, e) => {
-        return {username: randomPick(names), chatlog: randomPick(chatlogs), newuser: false};
-    }));
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            // throw dice to decide new user joins or not
-            if (Math.random() > 0.5) {
-                // new user joins
-                const newChat = {username: `${randomPick(names)}`, chatlog: `${randomPick(chatlogs)}`, newuser: Math.random() > 0.5};
-                setChats(chats => [newChat].concat(chats));
-            }
-        }, 3000);
-        return () => clearInterval(interval);
-    }, []);
-
+function ChatBacklog(propts) {
     return (
         <div className="backlog-box flex flex-col-reverse overflow-y-scroll overflow-x-hidden">
             <div className="backlog-wrapper flex flex-col-reverse justify-end">
                 {
-                    chats.map((e, i) => (
+                    propts.chats.map((e, i) => (
                         e.newuser ? <WelcomeMessage key={i} username={e.username} /> : <Chat key={i} username={e.username} chatlog={e.chatlog} />
                     ))
                 }
@@ -102,16 +87,37 @@ function ChatBacklog() {
     );
 }
 
-function Prompt() {
+function Prompt(props) {
     return (
         <div className="prompt text-white text-2xl italic font-normal p-3 justify-end">
             Try saying:<br />
-            <div className='font-bold'>&quot;Alexa, <span className='text-bc-yellow'>SAY</span> hi.&quot;</div>
+            <div className='font-bold'>&quot;Alexa, <span className='text-bc-yellow'>SAY</span> {props.username === NOT_NEW_USER_STRING ? "hi." : `hi to ${props.username}`}&quot;</div>
         </div>
     );
 }
 
 function FrontChannel() {
+    const initCount = 10;
+    const [chats, setChats] = useState([...Array(initCount)].map((i, e) => {
+        return {username: randomPick(names), chatlog: randomPick(chatlogs), newuser: false};
+    }));
+    const [prompt, setPrompt] = useState(NOT_NEW_USER_STRING);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            // throw dice to decide new user joins or not
+            if (Math.random() > 0.5) {
+                // new user joins
+                const isNewUser = Math.random() > 0.5;
+                const newUserName = randomPick(names);
+                const newChat = {username: `${newUserName}`, chatlog: `${randomPick(chatlogs)}`, newuser: isNewUser};
+                setPrompt(isNewUser ? `${newUserName}` : NOT_NEW_USER_STRING);
+                setChats(chats => [newChat].concat(chats));
+            }
+        }, 3000);
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <div>
             <div className="main w-screen h-screen flex flex-row justify-center items-center bg-black">
@@ -122,8 +128,8 @@ function FrontChannel() {
                 </div>
                 <div className="chats-box h-full grow flex flex-row">
                     <div className="wrapper flex flex-col w-full">
-                        <ChatBacklog />
-                        <Prompt />
+                        <ChatBacklog chats={chats} />
+                        <Prompt username={prompt} />
                     </div>
                 </div>
             </div>
