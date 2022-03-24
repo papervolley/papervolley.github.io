@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.video-box {
+    width: 720px;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
