@@ -1,6 +1,7 @@
 import './FrontChannel.css';
 import React, {useState, useEffect} from "react";
 import ReactDOM from "react-dom";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { randomPick } from "./utils.js";
 
 const NOT_NEW_USER_STRING = "noone";
@@ -36,21 +37,21 @@ const names = [
     "Charlotte",
     "William",
     "Sophia",
-    "James",
+    "Leilani",
     "Amelia",
     "Benjamin",
     "Isabella",
     "Lucas",
-    "Mia",
+    "Shia",
     "Henry",
     "Evelyn",
-    "Alexander",
+    "Kyle",
     "Harper"
 ];
 
 function Chat(props) {
     return (
-        <div className="inline-flex flex-col w-full chatlog">
+        <div className="inline-flex flex-col w-full chatlog" onClick={props.clickHandler}>
             <div className="name">{props.username}</div>
             <div className="bubble">
                 {props.chatlog}
@@ -61,8 +62,8 @@ function Chat(props) {
 
 function WelcomeMessage(props) {
     return (
-        <div className="inline w-full welcome text-white my-2 text-2xl">
-            <span className='ml-1 mr-2 animate-swing inline-block wave-emoji'>👋</span>Welcome, {props.username}
+        <div className="inline welcome text-white my-2 text-2xl w-full">
+            <span className='mr-2 animate-swing inline-block origin-hand-wave-emoji'>👋</span>Welcome, {props.username}
         </div>
     );
 }
@@ -70,13 +71,21 @@ function WelcomeMessage(props) {
 function ChatBacklog(propts) {
     return (
         <div className="backlog-box flex flex-col-reverse overflow-y-scroll overflow-x-hidden">
-            <div className="backlog-wrapper flex flex-col-reverse justify-end">
-                {
-                    propts.chats.map((e, i) => (
-                        e.newuser ? <WelcomeMessage key={i} username={e.username} /> : <Chat key={i} username={e.username} chatlog={e.chatlog} />
-                    ))
-                }
-            </div>
+            <TransitionGroup className="backlog-wrapper flex flex-col-reverse justify-end" component="div">
+            {
+                propts.chats.map((e, i) => {
+                    return e.newuser ? (
+                        <CSSTransition key={i} timeout={500} classNames="chat">
+                            <WelcomeMessage username={e.username} />
+                        </CSSTransition>
+                    ) : (
+                        <CSSTransition key={i} timeout={500} classNames="chat">
+                            <Chat username={e.username} chatlog={e.chatlog} />
+                        </CSSTransition>
+                    )
+                })
+            }
+            </TransitionGroup>
         </div>
     );
 }
@@ -100,29 +109,56 @@ function FrontChannel() {
     useEffect(() => {
         const interval = setInterval(() => {
             // throw dice to decide new user joins or not
-            if (Math.random() > 0.5) {
+            if (Math.random() > 0.75) {
                 // new user joins
-                const isNewUser = Math.random() > 0.5;
+                const isNewUser = Math.random() > 0.25;
                 const newUserName = randomPick(names);
                 const newChat = {username: `${newUserName}`, chatlog: `${randomPick(chatlogs)}`, newuser: isNewUser};
-                setPrompt(isNewUser ? `${newUserName}` : NOT_NEW_USER_STRING);
-                setChats(chats => [newChat].concat(chats));
+                setPrompt(prompt => isNewUser ? `${newUserName}` : prompt);
+                setChats(chats => chats.concat(newChat));
+                //const id = chats.length - 1;
+                /*setTimeout(() => {
+                    removeChat(chats.indexOf(newChat));
+                }, 30 * 1000);*/
             }
         }, 3000);
         return () => clearInterval(interval);
     }, []);
 
+    const removeChat = (at) => {
+        console.log(`delete ${at}`);
+        var c = chats.slice();
+        c.splice(at, 1);
+        setChats(c);
+    };
+
     return (
         <div>
             <div className="main w-screen h-screen flex flex-row justify-center items-center bg-black">
-                <div className="video-box h-full">
+                <div className="video-box h-full flex">
                     <video autoPlay={true} muted={true} loop={true}>
                         <source src="assets/videos/sample.mp4" type="video/mp4" />
                     </video>
                 </div>
                 <div className="chats-box h-full grow flex flex-row">
                     <div className="wrapper flex flex-col w-full">
-                        <ChatBacklog chats={chats} />
+                        <div className="backlog-box flex flex-col-reverse overflow-y-scroll overflow-x-hidden">
+                            <TransitionGroup className="backlog-wrapper flex flex-col justify-end" component="div">
+                            {
+                                chats.map((e, i) => {
+                                    return e.newuser ? (
+                                        <CSSTransition key={i} timeout={500} classNames="chat">
+                                            <WelcomeMessage username={e.username} />
+                                        </CSSTransition>
+                                    ) : (
+                                        <CSSTransition key={i} timeout={500} classNames="chat">
+                                            <Chat username={e.username} chatlog={e.chatlog} />
+                                        </CSSTransition>
+                                    )
+                                })
+                            }
+                            </TransitionGroup>
+                        </div>
                         <Prompt username={prompt} />
                     </div>
                 </div>

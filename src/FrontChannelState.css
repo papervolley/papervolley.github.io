@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.name-ball {
+    width: 172px;
+    height: 172px;
+    border: 16px solid #303030;
+    animation: breathing 5s ease-in-out 0s infinite alternate;
+}
+
+@keyframes breathing {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.1);
+    }
+}
+
+.question-box {
+    max-width: 15rem;
+}
+
+.alexa-bar {
+    height: 12px;
+    background: radial-gradient(18.98% 103526.64% at 62.99% 50%, #96E3F4 0%, rgba(126, 225, 247, 0.835221) 51.65%, rgba(94, 213, 239, 0) 100%) #0478B9 no-repeat;
+    animation: alexa-moving 6s linear infinite;
+}
+
+@keyframes alexa-moving {
+    from {
+        background-position: 0 0;
+    }
+
+    12.5% {
+        background-position: -120px 0;
+    }
+
+    25% {
+        background-position: -120px 0;
+    }
+
+    37.5% {
+        background-position: 80px 0;
+    }
+
+    50% {
+        background-position: 80px 0;
+    }
+
+    62.5% {
+        background-position: -20px 0;
+    }
+
+    75% {
+        background-position: -20px 0;
+    }
+
+    87.5% {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: 0 0;
+    }
+}

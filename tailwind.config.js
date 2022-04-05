@@ -5,6 +5,9 @@ module.exports = {
       colors: {
         'bc-yellow': '#FFEC37'
       },
+      transformOrigin: {
+        'hand-wave-emoji': '75% 75%'
+      },
       keyframes: {
         swing: {
           '0%, 1.6%, 3.2%, 4.8%, 100%': { transform: 'rotate(0deg)' },
@@ -12,7 +15,7 @@ module.exports = {
         }
       },
       animation: {
-        swing: 'swing 30s ease-out 3'
+        swing: 'swing 30s 0.3s ease-out 3'
       }
     },
   },

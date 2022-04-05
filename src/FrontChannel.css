@@ -14,7 +14,7 @@ video {
 }
 
 .chatlog {
-    margin: 2px 8px;
+    padding: 2px 8px;
     display: flex;
     flex-direction: column;
 }
@@ -28,7 +28,7 @@ video {
     font-size: 20px;
     color: white;
     background: #23233F;
-    border-radius: 0 6px;
+    border-radius: 0 12px 12px 12px;
     padding: 8px 16px;
     align-self: start;
 }
@@ -39,4 +39,31 @@ video {
 
 .wave-emoji {
     transform-origin: 75% 75%;
+}
+
+.welcome {
+    padding: 2px 8px;
+    opacity: 1;
+}
+
+.chat-enter {
+    opacity: 0.01;
+    transform: translate(-60, 0);
+}
+
+.chat-enter.chat-enter-active {
+    opacity: 1;
+    transform: translate(0, 0);
+    transition: opacity 300ms ease-out;
+}
+
+.chat-exit {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+.chat-exit.chat-leave-active {
+    opacity: 0.1;
+    transform: translate(-60px, 0);
+    transition: opacity 500ms ease-out;
 }
