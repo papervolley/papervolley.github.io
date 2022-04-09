@@ -1,0 +1,10 @@
+.sheet {
+    min-height: 120px;
+    width: 300px;
+    box-sizing: border-box;
+    display: flex;
+}
+
+:root {
+    --rsbs-max-w: 300px;
+}

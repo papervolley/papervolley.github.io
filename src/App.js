@@ -10,6 +10,7 @@ import FrontChannel from './FrontChannel';
 import FrontChannelStart from './FrontChannelStart';
 import FrontChannelState from './FrontChannelState';
 import Home from './Home';
+import Sheet from './Sheet';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path='/frontchannel' element={<FrontChannel />} />
         <Route path='/frontchannel/start' element={<FrontChannelStart />} />
         <Route path='/frontchannel/state' element={<FrontChannelState />} />
+        <Route path='/sheet' element={<Sheet />} />
         <Route path='/' element={<Home />} />
       </Routes>
     </div>

@@ -1,8 +1,9 @@
 import './FrontChannel.css';
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import ReactDOM from "react-dom";
+import { useLongPress } from 'use-long-press';
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import { randomPick } from "./utils.js";
+import { randomPick, mouseXY } from "./utils.js";
 
 const NOT_NEW_USER_STRING = "noone";
 
@@ -99,6 +100,67 @@ function Prompt(props) {
     );
 }
 
+function InteractionLayer(props) {
+    const [scale, setScale] = useState(1);
+    const [scaleInterval, setScaleInterval] = useState();
+    const [pressing, setPressing] = useState(false);
+    const [mouse, setMouse] = useState([0, 0]);
+
+    const emojiRef = useRef();
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setScale(pressing ? Math.min(scale + 0.01, 3) : 1);
+        }, 10);
+        return () => clearInterval(interval);
+    }, [scale, pressing, mouse]);
+
+    const startScaling = event => {
+        console.log("start");
+        //console.log(mouseXY(event));
+        setMouse(mouseXY(event));
+        setPressing(true);
+    }
+
+    const stopScaling = event => {
+        setPressing(false);
+        console.log("stop scaling");
+    }
+
+    const bind = useLongPress(() => {
+        //alert("something");
+        console.log("long pressed");
+    }, {
+        onStart: event => startScaling(event),
+        onFinish: event => stopScaling(event),
+        onCancel: event => stopScaling(event),
+        captureEvent: true,
+        filterEvents: (event) => 'button' in event ? event.button === 0 : true
+    });
+
+    return (
+        <>
+            <div className="interaction-layer" {...bind}>
+                <div className="emoji-wrapper" ref={emojiRef} style={{transform: `scale(${scale})`, left: mouse[0] - 12, top: mouse[1] - 48, visibility: pressing ? "visible" : "hidden"}}>
+                    <HeartEmoji />
+                </div>
+            </div>
+        </>
+    )
+}
+
+function HeartEmoji(props) {
+    return (
+        <>
+            <span className='h-full w-full text-yellow-500'>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+  <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+</svg>
+            </span>
+        </>
+    )
+}
+
 function FrontChannel() {
     const initCount = 10;
     const [chats, setChats] = useState([...Array(initCount)].map((i, e) => {
@@ -109,7 +171,7 @@ function FrontChannel() {
     useEffect(() => {
         const interval = setInterval(() => {
             // throw dice to decide new user joins or not
-            if (Math.random() > 0.75) {
+            if (Math.random() > 0.25) {
                 // new user joins
                 const isNewUser = Math.random() > 0.25;
                 const newUserName = randomPick(names);
@@ -163,6 +225,7 @@ function FrontChannel() {
                     </div>
                 </div>
             </div>
+            <InteractionLayer />
         </div>
     );
 }
