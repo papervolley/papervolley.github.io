@@ -11,6 +11,21 @@ const emojis = [
     "👍", "❤️", "🎉", "🇺🇦"
 ]
 
+const grettingEmojis = [
+    {emoji: "👋", suffix: "hand-wave"}, 
+    {emoji: "🎉", suffix: "tada"}, 
+    {emoji: "🎊", suffix: "confetti"}
+]
+
+const greetingTemplates = [
+    "Everyone welcome {USER_NAME}",
+    "Welcome, {USER_NAME}!",
+    "{USER_NAME} just landed",
+    "{USER_NAME} joined the party",
+    "{USER_NAME} just showed up",
+    "{USER_NAME} is here"
+]
+
 const chatlogs  = [
     "hi",
     "renee ding ding you got it right",
@@ -66,9 +81,13 @@ function Chat(props) {
 }
 
 function WelcomeMessage(props) {
+    const [emoji, setEmoji] = useState(randomPick(grettingEmojis));
+    const [template, setTemplate] = useState(randomPick(greetingTemplates).replace("{USER_NAME}", props.username));
+
     return (
         <div className="inline welcome text-white my-2 text-2xl w-full">
-            <span className='mr-2 animate-swing inline-block origin-hand-wave-emoji'>👋</span>Welcome, {props.username}
+            <div className="hidden animate-hand-wave animate-tada animate-confetti origin-hand-wave origin-tada origin-confetti"></div>
+            <span className={`mr-2 animate-${emoji["suffix"]} inline-block origin-${emoji["suffix"]}`}>{emoji["emoji"]}</span> {template}
         </div>
     );
 }
@@ -116,7 +135,7 @@ function InteractionLayer(props) {
     useEffect(() => {
         const interval = setInterval(() => {
             //setScale(scale => start ? 1 : pressing ? Math.min(scale + 0.01, 3) : scale);
-            setScale(scale => pressing ? oldPressing ? Math.min(scale + 0.01, 3) : 1 : scale);
+            setScale(scale => pressing ? oldPressing ? Math.min(scale + 0.02, 4) : 1 : scale);
             setEmoji(emoji => (pressing && !oldPressing) ? randomPick(emojis) : emoji);
             setOldPressing(pressing);
         }, 10);
@@ -164,7 +183,7 @@ function RandomEmoji(props) {
     return (
         <>
             <span className='h-full w-full text-yellow-500'>
-                <div className="h-10 w-10">{props.emoji}</div>
+                <div className="text-3xl">{props.emoji}</div>
             </span>
         </>
     )
@@ -185,14 +204,14 @@ function HeartEmoji(props) {
 function FrontChannel() {
     const initCount = 10;
     const [chats, setChats] = useState([...Array(initCount)].map((i, e) => {
-        return {username: randomPick(names), chatlog: randomPick(chatlogs), newuser: false};
+        return {username: randomPick(names), chatlog: randomPick(chatlogs), newuser: true};
     }));
     const [prompt, setPrompt] = useState(NOT_NEW_USER_STRING);
 
     useEffect(() => {
         const interval = setInterval(() => {
             // throw dice to decide new user joins or not
-            if (Math.random() > 0.25) {
+            if (Math.random() > 0.5) {
                 // new user joins
                 const isNewUser = Math.random() > 0.25;
                 const newUserName = randomPick(names);
@@ -204,7 +223,7 @@ function FrontChannel() {
                     removeChat(chats.indexOf(newChat));
                 }, 30 * 1000);*/
             }
-        }, 3000);
+        }, 3 * 1000);
         return () => clearInterval(interval);
     }, []);
 
