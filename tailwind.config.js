@@ -12,24 +12,34 @@ module.exports = {
       },
       keyframes: {
         "hand-wave-swing": {
-          '0%, 1.6%, 3.2%, 4.8%, 100%': { transform: 'rotate(0deg)' },
-          '0.8%, 2.4%, 4%': { transform: 'rotate(60deg)' }
+          '0%, 33.33%, 66.67%, 100%': { transform: 'rotate(0deg)' },
+          '16.67%, 50%, 83.33%': { transform: 'rotate(60deg)' }
         },
         "tada-swing": {
-          '0%, 4.8%, 100%': { transform: 'scale(1)' },
-          '0.4%, 2.0%, 3.6%': { transform: 'scale(0.9)' },
-          '1.2%, 2.8%, 4.4%': { transform: 'scale(1.1)' }
+          '0%, 100%': { transform: 'scale(1)' },
+          '8.33%, 41.67%, 75%': { transform: 'scale(0.9)' },
+          '25%, 58.33%, 91.67%': { transform: 'scale(1.1)' }
         },
-        "confetti-swing": {
+        /*"confetti-swing": {
           '0%, 5%, 100%': { transform: 'rotate(-30deg)' },
           '0.5%, 2.5%, 4.5%': { transform: 'rotate(-18deg)' },
           '1.5%, 3.5%': { transform: 'rotate(-42deg)' }
+        }*/
+        "confetti-swing": {
+          '0%, 33.33%, 66.67%, 100%': { transform: 'rotate(0deg)' },
+          '16.67%, 50%, 83.33%': { transform: 'rotate(-24deg)' }
+        },
+        "spin": {
+          '0%': { transform: 'scale(1) rotate(0deg)' },
+          '50%': { transform: 'scale(0.84) rotate(180deg)'},
+          '100%': { transform: 'scale(1) rotate(360deg)' }
         }
       },
       animation: {
-        "hand-wave": 'hand-wave-swing 30s 0.3s ease-out 12',
-        "tada": 'tada-swing 30s 0.3s ease-out 12',
-        "confetti": 'confetti-swing 30s 0.3s ease-out 12'
+        "hand-wave": 'hand-wave-swing 1.5s 0.3s ease-out 1',
+        "tada": 'tada-swing 1.5s 0.3s ease-out 1',
+        "confetti": 'confetti-swing 1.5s 0.3s ease-out 1',
+        "spin": 'spin 3s linear infinite'
       }
     },
   },

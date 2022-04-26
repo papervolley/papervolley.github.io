@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bc-button {
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    min-height: 48px;
+    font-size: 24px;
+    font-weight: 700;
+    color: black;
+    background: #FFEC37;
+    border: 2px solid #FFFFFF;
+    box-sizing: border-box;
+    box-shadow: inset 0px 0px 0px 6px #000000;
+    border-radius: 48px;
+}

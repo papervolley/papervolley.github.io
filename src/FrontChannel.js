@@ -1,9 +1,17 @@
 import './FrontChannel.css';
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect, useRef, Fragment} from "react";
 import ReactDOM from "react-dom";
 import { useLongPress } from 'use-long-press';
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { randomPick, mouseXY } from "./utils.js";
+import SpinIcon from "./Assets/Images/spin.svg";
+import SubscribeButton from './SubscribeButton';
+import { APNG } from 'react-apng/lib/apngJs/structs';
+import ApngComponent from 'react-apng';
+import confetti from './Assets/Images/confetti.png';
+import successAudio from './Assets/Audio/success3.mp3';
+import confettiJSON from './Assets/Animations/confetti.json';
+import { Player, Controls } from '@lottiefiles/react-lottie-player';
 
 const NOT_NEW_USER_STRING = "noone";
 
@@ -87,7 +95,7 @@ function WelcomeMessage(props) {
     return (
         <div className="inline welcome text-white my-2 text-2xl w-full">
             <div className="hidden animate-hand-wave animate-tada animate-confetti origin-hand-wave origin-tada origin-confetti"></div>
-            <span className={`mr-2 animate-${emoji["suffix"]} inline-block origin-${emoji["suffix"]}`}>{emoji["emoji"]}</span> {template}
+            <span className={`mr-2 animate-${emoji["suffix"]} inline-block origin-${emoji["suffix"]}`}>{emoji["emoji"]}</span>{template}
         </div>
     );
 }
@@ -183,7 +191,7 @@ function RandomEmoji(props) {
     return (
         <>
             <span className='h-full w-full text-yellow-500'>
-                <div className="text-3xl">{props.emoji}</div>
+                <div className="text-4xl">{props.emoji}</div>
             </span>
         </>
     )
@@ -207,6 +215,8 @@ function FrontChannel() {
         return {username: randomPick(names), chatlog: randomPick(chatlogs), newuser: true};
     }));
     const [prompt, setPrompt] = useState(NOT_NEW_USER_STRING);
+    const [subscribed, setSubscribed] = useState(false);
+    const confettiRef = useRef(null);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -233,6 +243,13 @@ function FrontChannel() {
         c.splice(at, 1);
         setChats(c);
     };
+
+    const subscribedAction = () => {
+        console.log("shall play animation");
+        setSubscribed(true);
+        confettiRef.current.one();
+        new Audio(successAudio).play();
+    }
 
     return (
         <div>
@@ -266,6 +283,8 @@ function FrontChannel() {
                 </div>
             </div>
             <InteractionLayer />
+            <ApngComponent ref={confettiRef} src={confetti} className="absolute bottom-0 left-0 w-[360px]" />
+            <SubscribeButton className="absolute bottom-4 left-4" clickHandler={subscribedAction} />
         </div>
     );
 }
