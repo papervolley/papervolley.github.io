@@ -9,7 +9,7 @@ import SubscribeButton from './SubscribeButton';
 import { APNG } from 'react-apng/lib/apngJs/structs';
 import ApngComponent from 'react-apng';
 import confetti from './Assets/Images/confetti.png';
-import successAudio from './Assets/Audio/success3.mp3';
+import successAudio from './Assets/Audio/success.mp3';
 import confettiJSON from './Assets/Animations/confetti.json';
 import { Player, Controls } from '@lottiefiles/react-lottie-player';
 
@@ -247,7 +247,7 @@ function FrontChannel() {
     const subscribedAction = () => {
         console.log("shall play animation");
         setSubscribed(true);
-        confettiRef.current.one();
+        confettiRef.current.play();
         new Audio(successAudio).play();
     }
 
@@ -283,7 +283,13 @@ function FrontChannel() {
                 </div>
             </div>
             <InteractionLayer />
-            <ApngComponent ref={confettiRef} src={confetti} className="absolute bottom-0 left-0 w-[360px]" />
+            <Player
+                ref={confettiRef}
+                autoplay={false}
+                loop={false}
+                src={confettiJSON}
+                style={{height: '480px', width: '360px', position: 'absolute', left: 0, bottom: 0, pointerEvents: 'none'}}
+            ></Player>
             <SubscribeButton className="absolute bottom-4 left-4" clickHandler={subscribedAction} />
         </div>
     );

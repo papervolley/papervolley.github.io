@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    box-sizing: border-box;
+}
+
+body, p {
+    background: #00001F;
+    font-size: 16px;
+    font-family: sans-serif;
+    color: white;
+}
+
+body {
+    padding: 24px 16px;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1.25;
+}
+
+h2 {
+    font-size: 1.625rem;
+    font-weight: bold;
+    line-height: 1.25;
+}
+
+h3 {
+    font-size: 1.375rem;
+    font-weight: bold;
+    line-height: 1.14;
+}
+
+h4 {
+    font-size: 1.125rem;
+    font-weight: bold;
+    line-height: 1.11;
+}
+
+blockquote {
+    font-size: 1.625rem;
+    font-weight: 500;
+    line-height: 1.25;
+}
+
+.callout {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.125;
+}
+
+.content {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.trivia {
+    
+}
+
+.trivia .type {
+    background: url(Assets/Images/icon_trophy.svg) left center no-repeat;
+    background-size: auto 32px;
+    padding-left: 52px;
+}
+
+.countdown {
+    width: 120px;
+    height: 120px;
+    align-items: center;
+    justify-content: center;
+}
