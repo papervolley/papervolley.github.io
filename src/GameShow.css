@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    font-family: "Gilroy", sans-serif;
+    font-size: 16px;
+}
+
+.round-result-plain-english {
+    background: linear-gradient(180deg, #FFFFFF 39.47%, #FFFBDA 75.56%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 64px;
+    line-height: 82px;
+    display: flex;
+    align-items: center;
+    letter-spacing: -0.01em;
+    text-shadow: 0px 7px 0px 0px #765E0B;
+}
+
+.points-change.correct {
+    background: #86F0B0;
+}
+
+.points-change.incorrect {
+    background: #FF8E8E;
+}
+
+.points-change {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 16px 8px 8px;
+    gap: 8px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 100px;
+    font-family: 'Quicksand', sans-serif;
+    color: #083913;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 25px;
+    letter-spacing: -0.015em;
+    margin-right: 8px;
+}
+
+.points-change img {
+    width: 26px;
+    height: 26px;
+}
+
+.round-ask-points {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 16px 8px 8px;
+    gap: 8px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 100px;
+    font-family: 'Quicksand', sans-serif;
+    color: #ffffff;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 25px;
+    letter-spacing: -0.015em;
+    background: rgba(255, 255, 255, 0.33);
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-right: 8px;
+}
+
+.round-ask-points img {
+    width: 26px;
+    height: 26px;
+}

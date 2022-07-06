@@ -4,13 +4,14 @@ import ReactDOM from "react-dom";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { randomPick, mouseXY } from "./utils.js";
 import { Player, Controls } from '@lottiefiles/react-lottie-player';
-import countdownJSON from './Assets/Animations/countdown.json';
-import countdownAudio from './Assets/Audio/countdown_30s.mp3';
+import countdownJSON from './Assets/Animations/countdown_circular_animation.json';
+import countdownAudio from './Assets/Audio/countdown.mp3';
 
 function FrontChat() {
     const countdownProgressRef = useRef(null);
     const countdownAudioRef = useRef(new Audio(countdownAudio));
     const countdownTimerRef = useRef(null);
+    const [startTime, setStartTime] = useState(Date.now());
     const [time, setTime] = useState(0);
 
     const timerAction = () => {
@@ -21,12 +22,15 @@ function FrontChat() {
         countdownAudioRef.current.currentTime = 0;
         countdownProgressRef.current.stop();
 
+        setStartTime(Date.now());
+
         // play
         countdownProgressRef.current.play();
         countdownAudioRef.current.play();
         countdownTimerRef.current = setInterval(() => {
-            setTime(time => Math.min(30, time + 1));
-        }, 1000);
+            console.log(Math.floor(Date.now() - startTime / 1000));
+            setTime(_ => Math.min(30, Math.floor((Date.now() - startTime) / 1000)));
+        }, 100);
     }
 
     return (

@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.video-box {
+    width: auto;
+    height: auto;
+}
+
+.subheadline {
+    font-size: 36px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.77);
+}
+
+.title {
+    font-size: 84px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.hint {
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.main {
+    padding: 24px 36px;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+div, html, body, img {
+    user-select: none;
+    -webkit-user-select: none; /* disable selection/Copy of UIWebView */
+    -webkit-touch-callout: none; /* disable the IOS popup when long-press on a link */
+}
+
+.grid-rows-12 {
+    grid-template-rows: repeat(12, minmax(0, 1fr));
+}
+
+.grid-cols-8 {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+
+.row-span-7 {
+    grid-row: span 7 / span 7;
+}
+
+.laurel-left {
+    background: url(Assets/Images/image_laurel_left.svg) no-repeat right center;
+    width: 120px;
+    height: 160px;
+    animation: laurel-left-waving 0.4s ease-out 0s infinite alternate forwards;
+    transform-origin: 80% 64%;
+}
+
+.laurel-right {
+    background: url(Assets/Images/image_laurel_right.svg) no-repeat left center;
+    width: 120px;
+    height: 160px;
+    animation: laurel-right-waving 0.4s linear 0s infinite alternate forwards;
+    transform-origin: 20% 64%;
+}
+
+@keyframes laurel-left-waving {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-15deg);
+    }
+}
+
+@keyframes laurel-right-waving {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(15deg);
+    }
+}
