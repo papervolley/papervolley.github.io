@@ -43,9 +43,12 @@ export function AggregateAnswerListItem({
   variant,
 }) {
   return (
-    <div className={`aggregate-answer-list-item ${variant}`} style={{boxShadow: "inset -5em 0px white"}}>
-        <div className='value'>{value}</div>
-        <div className='percentage'>{percentage}%</div>
+    <div className={`aggregate-answer-list-item ${variant}`} style={{width: 20}}>
+        <div className="progress"> </div>
+        <div className="content">
+            <div className='value'>{value}</div>
+            <div className='percentage'>{percentage}%</div>
+        </div>
     </div>
   );
 }
