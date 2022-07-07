@@ -31,8 +31,8 @@ export function AggregateAnswerList() {
     return (
         <div className='aggregate-answer-list'>
             <AggregateAnswerListItem value="Option 1" percentage={14} variant="incorrect" />
-            <AggregateAnswerListItem value="Option 2" percentage={14} variant="correct" />
-            <AggregateAnswerListItem value="Option 3" percentage={14} variant="other" />
+            <AggregateAnswerListItem value="Option 2" percentage={100-14-23} variant="correct" />
+            <AggregateAnswerListItem value="Option 3" percentage={23} variant="other" />
         </div>
     );
 }
@@ -43,8 +43,8 @@ export function AggregateAnswerListItem({
   variant,
 }) {
   return (
-    <div className={`aggregate-answer-list-item ${variant}`} style={{width: 20}}>
-        <div className="progress"> </div>
+    <div className={`aggregate-answer-list-item ${variant}`}>
+        <div className="progress" style={{width: `${percentage}%`}}> </div>
         <div className="content">
             <div className='value'>{value}</div>
             <div className='percentage'>{percentage}%</div>
