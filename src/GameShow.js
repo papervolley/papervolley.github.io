@@ -10,6 +10,7 @@ function GameShow() {
             <PointsChange isCorrect={true} />
             <PointsChange isCorrect={false} />
             <RoundAskPoints points={10} />
+            <AggregateAnswerList />
         </>
     );
 }
@@ -25,5 +26,29 @@ export function RoundResultPlainEnglish({ isCorrect }) {
 export function RoundAskPoints({ points }) {
     return <div className='round-ask-points'><img src={IconPoint} alt="points" />+{points} points</div>;
 }
+
+export function AggregateAnswerList() {
+    return (
+        <div className='aggregate-answer-list'>
+            <AggregateAnswerListItem value="Option 1" percentage={14} variant="incorrect" />
+            <AggregateAnswerListItem value="Option 2" percentage={14} variant="correct" />
+            <AggregateAnswerListItem value="Option 3" percentage={14} variant="other" />
+        </div>
+    );
+}
+
+export function AggregateAnswerListItem({
+  value,
+  percentage,
+  variant,
+}) {
+  return (
+    <div className={`aggregate-answer-list-item ${variant}`} style={{boxShadow: "inset -5em 0px white"}}>
+        <div className='value'>{value}</div>
+        <div className='percentage'>{percentage}%</div>
+    </div>
+  );
+}
+
 
 export default GameShow;
