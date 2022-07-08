@@ -105,15 +105,15 @@
     height: 100%;
     width: 100%;
     display:flex;
-    flex-direction: row;
+    flex-direction: column;
     padding: 8px;
-    gap: 8px;
+    gap: 0px;
     align-items: center;
 }
 
 .aggregate-answer-list-item .value {
     font-size: 24px;
-    font-weight: 400;
+    font-weight: 600;
     flex-grow: 1;
 }
 
